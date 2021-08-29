@@ -1,3 +1,7 @@
+/*
+    Written by LeRepex
+    Last updated: 29.08.2021
+*/
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,33 +38,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+// Initialize Variables and set Types
 var tmdbapikey;
 var tmdbid;
 var jsondata;
+// Main Function 
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var poster_path;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    grabDataFromTextboxes();
-                    return [4 /*yield*/, getJSON("https://api.themoviedb.org/3/movie/" + tmdbid + "?api_key=" + tmdbapikey)];
+                    grabDataFromTextboxes(); // Call function to get user input
+                    return [4 /*yield*/, getJSON("https://api.themoviedb.org/3/movie/" + tmdbid + "?api_key=" + tmdbapikey)]; // generate URL for API request by combining user input with an URL Template
                 case 1:
-                    jsondata = _a.sent();
-                    poster_path = "https://image.tmdb.org/t/p/w500" + jsondata.poster_path;
-                    console.log(jsondata);
-                    clearResultBox();
-                    placeResult(poster_path, "resultBox", jsondata.original_title, jsondata.release_date, jsondata.runtime);
-                    document.getElementById("resultBox").scrollIntoView({ behavior: "smooth" });
+                    jsondata = _a.sent(); // generate URL for API request by combining user input with an URL Template
+                    poster_path = "https://image.tmdb.org/t/p/w500" + jsondata.poster_path // grab the path from the json response and make it usable later
+                    ;
+                    console.log(jsondata); // DEBUG: drop all received data from the API call into the JS console
+                    clearResultBox(); // Clear resultbox for next result
+                    placeResult(poster_path, "resultBox", jsondata.original_title, jsondata.release_date, jsondata.runtime); // call the placeResult function with all the needed parameters
+                    document.getElementById("resultBox").scrollIntoView({ behavior: "smooth" }); // Scroll to result smoothly
                     return [2 /*return*/];
             }
         });
     });
 }
+// Function to get user input from the two Textboxes
 function grabDataFromTextboxes() {
-    tmdbapikey = document.getElementById("tmdbapikey").value;
-    tmdbid = document.getElementById("tmdbid").value;
+    tmdbapikey = document.getElementById("tmdbapikey").value; // Save the input from the first textbox to the var tmdbapikey
+    tmdbid = document.getElementById("tmdbid").value; // Save the input from the second textbox to the var tmdbid
 }
+// Function to make an API request and give back the result as an object
 function getJSON(url) {
     return __awaiter(this, void 0, void 0, function () {
         var response, data;
@@ -77,6 +86,7 @@ function getJSON(url) {
         });
     });
 }
+// Function to add the result elements to the "resultbox"
 function placeResult(url, place, title, release_date, runtime) {
     //get div to place results in
     var src = document.getElementById(place);
@@ -99,6 +109,7 @@ function placeResult(url, place, title, release_date, runtime) {
     movieruntime.textContent = "Runtime: " + runtime + " Min";
     src.appendChild(movieruntime);
 }
+// Function to clear the "resultbox" for a new request
 function clearResultBox() {
     document.getElementById("resultBox").innerHTML = "";
 }
